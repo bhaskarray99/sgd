@@ -3,7 +3,7 @@
 sgd is an R package for large
 scale estimation. It features many stochastic gradient methods, built-in models,
 visualization tools, automated hyperparameter tuning, model checking, interval
-estimation, and convergence diagnostics.
+estimation, and convergence diagnostics. This forked version involves independent sampling at each iterate.
 
 ## Features
 At the core of the package is the function
