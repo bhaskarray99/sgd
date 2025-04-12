@@ -6,6 +6,7 @@
 #include "../learn-rate/onedim_learn_rate.h"
 #include "../learn-rate/onedim_eigen_learn_rate.h"
 #include "../learn-rate/ddim_learn_rate.h"
+#include <cmath>
 
 class base_sgd {
   /**
@@ -20,7 +21,7 @@ public:
     name_ = Rcpp::as<std::string>(sgd["method"]);
     n_params_ = Rcpp::as<unsigned>(sgd["nparams"]);
     reltol_ = Rcpp::as<double>(sgd["reltol"]);
-    n_passes_ = Rcpp::as<unsigned>(sgd["npasses"]);
+    n_passes_ = Rcpp::as<double>(sgd["npasses"]);
     size_ = Rcpp::as<unsigned>(sgd["size"]);
     estimates_ = zeros<mat>(n_params_, size_);
     last_estimate_ = Rcpp::as<mat>(sgd["start"]);
@@ -36,7 +37,7 @@ public:
     }
 
     // Set which iterations to store estimates
-    unsigned n_iters = n_samples*n_passes_;
+    unsigned n_iters = static_cast<unsigned>(std::ceil(n_samples*n_passes_));
     for (unsigned i = 0; i < size_; ++i) {
       pos_(0, i) = int(round(pow(10.,
                    i * log10(static_cast<double>(n_iters)) / (size_-1))));
@@ -72,8 +73,8 @@ public:
     return name_;
   }
   // TODO set naming convention properly
-  unsigned get_n_passes() const {
-    return n_passes_;
+  double get_n_passes() const {
+    return static_cast<double>(n_passes_);
   }
   mat get_estimates() const {
     return estimates_;
@@ -160,7 +161,7 @@ protected:
   std::string name_;        // name of stochastic gradient method
   unsigned n_params_;       // number of parameters
   double reltol_;           // relative tolerance for convergence
-  unsigned n_passes_;       // number of passes over data
+  double n_passes_;       // number of passes over data
   unsigned size_;           // number of estimates to be recorded (log-uniformly)
   mat estimates_;           // collection of stored estimates
   mat last_estimate_;       // last SGD estimate

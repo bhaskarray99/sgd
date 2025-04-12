@@ -2,6 +2,6 @@
 # Generator token: 10BE3573-1514-4C36-9D1C-5A225CD40393
 
 run <- function(dataset, model_control, sgd_control) {
-    .Call('_sgd_run', PACKAGE = 'sgd', dataset, model_control, sgd_control)
+    .Call('_sgd_run', PACKAGE = 'sgditer', dataset, model_control, sgd_control)
 }
 

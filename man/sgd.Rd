@@ -82,8 +82,8 @@ proportional hazards model), \code{"gmm"} (generalized method of moments),
   \item{\code{reltol}}{relative convergence tolerance. The algorithm stops
     if it is unable to change the relative mean squared difference in the
     parameters by more than the amount. Default is \code{1e-05}.}
-  \item{\code{npasses}}{the maximum number of passes over the data. Default
-    is 3.}
+  \item{\code{npasses}}{the maximum number of expected passes over the data. Default
+    is 3. Can be fractional. The total number of iterations is npasses(no. of samples) for method \code{"sgd"}. For all other methods, \code{"ceiling(npasses)"} is used as the number of actual passes over the data.}
   \item{\code{pass}}{logical. Should \code{tol} be ignored and run the
     algorithm for all of \code{npasses}?}
   \item{\code{shuffle}}{logical. Should the algorithm shuffle the data set

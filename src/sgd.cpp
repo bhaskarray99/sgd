@@ -13,6 +13,7 @@
 #include "sgd/momentum_sgd.h"
 #include "sgd/nesterov_sgd.h"
 #include "validity-check/validity_check.h"
+#include <cmath>
 
 // [[Rcpp::depends(BH)]]
 // [[Rcpp::depends(RcppArmadillo)]]
@@ -167,7 +168,7 @@ template<typename MODEL, typename SGD>
 Rcpp::List run(const data_set& data, MODEL& model, SGD& sgd) {
   unsigned n_samples = data.n_samples;
   // unsigned n_features = data.n_features;
-  unsigned n_passes = sgd.get_n_passes();
+  double n_passes = static_cast<double>(sgd.get_n_passes());
 
   bool good_gradient = true;
   bool good_validity = true;
@@ -182,7 +183,7 @@ Rcpp::List run(const data_set& data, MODEL& model, SGD& sgd) {
   mat theta_old = sgd.get_last_estimate();
   mat theta_old_ave = theta_old;
 
-  unsigned max_iters = n_samples*n_passes;
+  unsigned max_iters = static_cast<unsigned>(std::ceil(n_samples*n_passes));
   bool do_more_iterations = true;
   bool converged = false;
   if (sgd.verbose()) {

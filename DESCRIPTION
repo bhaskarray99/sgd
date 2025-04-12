@@ -1,4 +1,4 @@
-Package: sgd
+Package: sgditer
 Type: Package
 Title: Stochastic Gradient Descent for Scalable Estimation
 Version: 1.1.2

@@ -3,6 +3,7 @@
 
 #include "../basedef.h"
 #include "data_point.h"
+#include <cmath>
 
 // wrapper around R's RNG such that we get a uniform distribution over
 // [0,n) as required by the STL algorithm
@@ -20,7 +21,7 @@ class data_set {
    * @param shuffle  whether to shuffle data set or not
    */
 public:
-  data_set(const SEXP& xpMat, const mat& Xx, const mat& Yy, unsigned n_passes,
+  data_set(const SEXP& xpMat, const mat& Xx, const mat& Yy, double n_passes,
     bool big, bool shuffle) : Y(Yy), big(big), xpMat_(xpMat), shuffle_(shuffle) {
     if (!big) {
       X = Xx;
@@ -31,19 +32,14 @@ public:
       n_features = xpMat_->ncol();
     }
     if (shuffle_) {
-      idxvec_ = std::vector<unsigned>(n_samples*n_passes);
-      for (unsigned i = 0; i < n_passes; ++i) {
-        for (unsigned j = 0; j < n_samples; ++j) {
-          idxvec_[i * n_samples + j] = j;
-        }
-        // std::random_shuffle(idxvec_.begin() + i * n_samples,
-        //                     idxvec_.begin() + (i + 1) * n_samples,
-        //                     randWrapper);
-        std::random_device rd;
-        std::mt19937 gen(rd());
-        std::shuffle(idxvec_.begin() + i * n_samples,
-                            idxvec_.begin() + (i + 1) * n_samples,
-                            gen);
+      idxvec_ = std::vector<unsigned>(static_cast<unsigned>(std::ceil(n_samples*n_passes)));
+      std::random_device rd;
+      std::mt19937 gen(rd());
+
+      std::uniform_int_distribution<> dis(0, n_samples - 1);
+
+      for (unsigned i = 0; i < idxvec_.size(); ++i) {
+        idxvec_[i] = dis(gen);
       }
     }
   }
