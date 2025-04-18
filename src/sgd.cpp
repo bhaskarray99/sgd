@@ -43,7 +43,7 @@ Rcpp::List run(SEXP dataset, SEXP model_control, SEXP sgd_control) {
   data_set data(Dataset["bigmat"],
                 Rcpp::as<mat>(Dataset["X"]),
                 Rcpp::as<mat>(Dataset["Y"]),
-                Rcpp::as<unsigned>(Sgd_control["npasses"]),
+                Rcpp::as<double>(Sgd_control["npasses"]),
                 Rcpp::as<bool>(Dataset["big"]),
                 Rcpp::as<bool>(Sgd_control["shuffle"]));
 
