@@ -45,9 +45,9 @@ public:
     if (pos_(0, pos_.n_cols-1) != n_iters) {
       pos_(0, pos_.n_cols-1) = n_iters;
     }
-    if (n_iters < size_) {
+    /*if (n_iters < size_) {
       Rcpp::Rcout << "Warning: Too few data points for plotting!" << std::endl;
-    }
+    }*/
 
     // Set learning rate
     std:: string lr = Rcpp::as<std::string>(sgd["lr"]);
